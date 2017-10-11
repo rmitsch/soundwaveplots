@@ -105,3 +105,10 @@ py3env
 
 # No .wav files.
 .wav
+
+# No .xml files.
+.xml
+
+# No .idea folder.
+.idea/
+.idea
