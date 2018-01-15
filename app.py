@@ -43,7 +43,7 @@ def plot_data(xticks,
     :return:
     """
 
-    matplotlib.rcParams['lines.linewidth'] = 0.007 # for 1000 dpi: 0.004
+    matplotlib.rcParams['lines.linewidth'] = 0.007  # for 1000 dpi: 0.0045, for 100 dpi:
     matplotlib.rcParams['figure.dpi'] = 300
     matplotlib.rcParams['savefig.dpi'] = dpi_print
     # Allow for for more points to be drawn.
@@ -52,7 +52,7 @@ def plot_data(xticks,
     matplotlib.rcParams['savefig.edgecolor'] = foreground_color
 
     # A3: 297x420
-    figure = plt.figure(figsize=(42 * 0.393701, 29.7 * 0.393701),
+    figure = plt.figure(figsize=(75 * 0.393701, 50 * 0.393701),
                         facecolor=background_color,
                         edgecolor=foreground_color)
 
@@ -72,18 +72,38 @@ def plot_data(xticks,
                  'weight': 'bold',
                  'size': font_size_lead}
 
-    plt.figtext(0.5, 0.235, sub_text, fontdict=font_sub, horizontalalignment='center')
-    plt.figtext(0.5, 0.185, lead_text, fontdict=font_lead, horizontalalignment='center')
+    # Var. 1: Horizontal, text in left bottom corner.
+    plt.figtext(0.25, 0.22, sub_text, fontdict=font_sub, horizontalalignment='center')
+    plt.figtext(0.25, 0.17, lead_text, fontdict=font_lead, horizontalalignment='center')
+    plt.figtext(0.25, 0.115, "O N   T H E   N A T U R E   O F   D A Y L I G H T", fontdict=font_lead, horizontalalignment='center')
 
-    plt.subplots_adjust(left=0, bottom=0.305, right=1, top=0.895, wspace=0, hspace=0)
-    plt.plot(time, wav_data_avg, color=foreground_color, rasterized=True)
+    plt.hlines(y=min(wav_data_avg) - max(wav_data_avg) * 0.1,
+               xmin=max(time) * 0.09,
+               xmax=max(time) * 0.36,
+               color='white',
+               linewidth=1.5)
 
-    plt.savefig('output/soundwave.pdf',
+    plt.subplots_adjust(left=0, bottom=0.113, right=1, top=0.925, wspace=0, hspace=0)
+    plt.plot(time, wav_data_avg, color=foreground_color, rasterized=True, alpha=1.0)
+
+    # Var. 2.: Vertical.
+    # plt.figtext(0.8, 0.55, sub_text, fontdict=font_sub, horizontalalignment='center')
+    # plt.figtext(0.8, 0.585, "D I N A H   W A S H I N G T O N", fontdict=font_sub, horizontalalignment='center')
+    # plt.figtext(0.8, 0.425, lead_text, fontdict=font_lead, horizontalalignment='center')
+    # plt.figtext(0.8, 0.385, "O N   T H E   N A T U R E  O F   D A Y L I G H T", fontdict=font_lead,
+    #             horizontalalignment='center')
+    #
+    # plt.hlines(y=max(time) / 2, xmin=max(wav_data_avg) * 1.15, xmax=max(wav_data_avg) * 2.25, color='white', linewidth=1.5)
+    #
+    # plt.subplots_adjust(bottom=0.05, left=0, top=0.95, right=1, wspace=0, hspace=0)
+    # plt.plot(wav_data_avg, np.flip(time, axis=0), color=foreground_color, rasterized=True)
+
+    plt.savefig('output/soundwave.png',
                 facecolor=background_color,
                 edgecolor=foreground_color,
                 transparent=True,
                 papertype='a3',
-                format='pdf')
+                format='png')
 
     # plt.show()
     plt.close(figure)
@@ -137,14 +157,11 @@ def run(filename,
     # Calculate avg. of channel values.
     # n_window = 50
     wave_data_avg = (wave_data[0] + wave_data[1]) / 2
-    print(len(wave_data[0]))
-    print(len(wave_data[1]))
-    print(len(wave_data_avg))
-    print(len(time))
+
     # Plot sound data.
     plot_data(xticks=xticks,
-              time=time, #time[:len(time) - n_window + 1],
-              wav_data_avg=wave_data[0],
+              time=time,
+              wav_data_avg=wave_data_avg,
               background_color=background_color,
               foreground_color=foreground_color,
               lead_text=lead_text,
@@ -164,12 +181,13 @@ def run(filename,
 # György Ligeti - Lux Aeterna
 # Lux Aeterna By Clint Mansell
 # Daughter - Youth
-run(filename="/home/raphael/Music/Neu/Daughter - Youth.mp3",
-    background_color="red",
+# The Node [R08]
+run(filename="/home/raphael/Music/Download/Dinah Washington And Max Richter/This Bitter Earth And On The Nature Of Daylight.mp3",
+    background_color="#264d73",
     foreground_color="white",
-    lead_text="Y  O  U  T  H",
-    sub_text="D A U G H T E R",
-    font_size_lead=27,
-    font_size_sub=23,
+    lead_text="T H I S   B I T T E R   E A R T H",
+    sub_text="D I N A H   W A S H I N G T O N   &   M A X   R I C H T E R",
+    font_size_lead=26,
+    font_size_sub=24,
     dpi_print=1000,
     generate_wav=True)
